@@ -275,3 +275,58 @@ function arraysEqual(arrA, arrB) {
 function objectsEqual(objA, objB) {
   return (JSON.stringify(objA) === JSON.stringify(objB))
 }
+
+// index.js
+
+function myEach(collection, callback) {
+  if (Array.isArray(collection)) {
+    for (let i = 0; i < collection.length; i++) {
+      callback(collection[i]);
+    }
+  } else {
+    for (let key in collection) {
+      callback(collection[key]);
+    }
+  }
+  return collection;
+}
+
+function myReduce(collection, callback, initialValue) {
+  let accumulator = initialValue !== undefined ? initialValue : collection[0];
+  let startIndex = initialValue !== undefined ? 0 : 1;
+
+  for (let i = startIndex; i < collection.length; i++) {
+    accumulator = callback(accumulator, collection[i], collection);
+  }
+
+  return accumulator;
+}
+
+function myFirst(collection, n = 1) {
+  return n === 1 ? collection[0] : collection.slice(0, n);
+}
+
+function myLast(collection, n = 1) {
+  return n === 1 ? collection[collection.length - 1] : collection.slice(-n);
+}
+
+// index.js
+
+function myReduce(collection, callback, initialValue) {
+  let accumulator = initialValue !== undefined ? initialValue : collection[Object.keys(collection)[0]];
+  let startIndex = initialValue !== undefined ? 0 : 1;
+
+  if (Array.isArray(collection)) {
+    for (let i = startIndex; i < collection.length; i++) {
+      accumulator = callback(accumulator, collection[i], collection);
+    }
+  } else {
+    const keys = Object.keys(collection);
+    for (let i = startIndex; i < keys.length; i++) {
+      accumulator = callback(accumulator, collection[keys[i]], collection);
+    }
+  }
+
+  return accumulator;
+}
+
